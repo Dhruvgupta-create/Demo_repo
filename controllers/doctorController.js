@@ -1,3 +1,4 @@
+import { query } from "express";
 import Doctor from "../models/DoctorSchema.js";
 
 export const updateDoctor = async(req,res)=> {
@@ -40,7 +41,20 @@ export const getSingleDoctor = async(req,res)=> {
 export const getAllDoctor = async(req,res)=> {
 
     try {         
-         const Doctors=await Doctor.find({}).select("-password");
+        const {query}=req.query;
+        let Doctors;
+
+        if (query) {
+            Doctors= await Doctor.find({isApproved:"approved" ,
+                                         $or:[
+                                            {name:{ $regex : query , $options : "i"} },
+                                            {specialization : {$regex : query , $options : "i"}},
+                                         ],}).select("-password");
+            
+        } else {
+            Doctors=await Doctor.find({isApproved:"approved"}).select("-password");
+        }
+          
 
          res.status(200).json({success:true , message:' All Doctors Found',data:Doctors})
     } catch (error) {
