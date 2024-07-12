@@ -7,6 +7,7 @@ import { dbConnection } from "./database/dbconnection.js"
 import authRouter from "./routes/authRoutes.js"
 import userRouter from "./routes/userRoutes.js"
 import doctorRouter from "./routes/doctorRoutes.js"
+import reviewRouter from "./routes/reviewRoutes.js"
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use(cors(corsOption));
 app.use("/api/v1/auth",authRouter)
 app.use("/api/v1/user",userRouter)
 app.use("/api/v1/doctor",doctorRouter)
+app.use("/api/v1/reviews",reviewRouter)
 
 
 app.listen(port, () => {
